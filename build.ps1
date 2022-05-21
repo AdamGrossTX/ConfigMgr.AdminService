@@ -4,7 +4,7 @@ param (
     [System.IO.FileInfo]$modulePath = "$PSScriptRoot\ConfigMgr.AdminService",
 
     [parameter(Mandatory = $false)]
-    [switch]$buildLocal= $true
+    [switch]$buildLocal
 )
 
 try {
