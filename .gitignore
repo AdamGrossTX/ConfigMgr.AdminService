@@ -1,2 +1,4 @@
 release
 .tests
+*.nuspec
+!module.nuspec

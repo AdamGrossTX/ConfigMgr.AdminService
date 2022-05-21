@@ -51,16 +51,16 @@ $($previousVersion.releaseNotes)
         New-Item -Path $relPath -ItemType Directory -Force | Out-Null
     }
 
-    Copy-Item -Path "$modulePath\*" -Destination "$relPath" -Recurse -Exclude ".gitKeep", "releaseNotes.txt", "description.txt", "temp"
+    Copy-Item -Path "$modulePath\*" -Destination "$relPath" -Recurse -Exclude ".gitKeep", "releaseNotes.txt", "description.txt"
 
-    #$Manifest = @{
-    #    Path              = "$relPath\$moduleName.psd1"
-    #    ModuleVersion     = $newVersion
-    #    Description       = (Get-Content "$modulePath\description.txt" -Raw).ToString()
-    #    FunctionsToExport = (Get-ChildItem -Path "$relPath\Public\*.ps1" -Recurse).BaseName
-    #    ReleaseNotes      = $releaseNotes
-    #}
-    #Update-ModuleManifest @Manifest
+    $Manifest = @{
+        Path              = "$relPath\$moduleName.psd1"
+        ModuleVersion     = $newVersion
+        Description       = (Get-Content "$modulePath\description.txt" -Raw).ToString()
+        FunctionsToExport = (Get-ChildItem -Path "$relPath\Public\*.ps1" -Recurse).BaseName
+        ReleaseNotes      = $releaseNotes
+    }
+    Update-ModuleManifest @Manifest
 }
 catch {
     $_
