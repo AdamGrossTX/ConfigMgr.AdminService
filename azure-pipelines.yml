@@ -21,7 +21,6 @@ stages:
             displayName: Build
             inputs:
               filePath: './build.ps1'
-              arguments: '-modulePath $(modulePath)'
               pwsh: true
 
           - task: CopyFiles@2
@@ -62,4 +61,4 @@ stages:
                       }
                     pwsh: true
                   env:
-                    APIKEY: $(apiKey)
+                    APIKEY: $(APIKEY)
