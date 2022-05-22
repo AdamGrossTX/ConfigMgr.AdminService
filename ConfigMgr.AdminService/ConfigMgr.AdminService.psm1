@@ -2,6 +2,7 @@ using module 'Enums\AdminServiceEnums.psm1'
 
 $script:ModuleRoot = $PSScriptRoot
 $script:tick = [char]0x221a
+[hashtable]$script:Tag = @{Project = "ConfigMgr.AdminService"}
 
 #region Get public and private function definition files.
 $Public  = @(Get-ChildItem -Path $script:ModuleRoot\Public\*.ps1 -ErrorAction SilentlyContinue)

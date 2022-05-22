@@ -2,15 +2,15 @@ function Initialize-CMAdminService {
     [cmdletbinding(DefaultParameterSetName = 'UserAuth')]
     param(
 
-        [parameter(mandatory = $true, parametersetname = "UserAuth")]
-        [parameter(mandatory = $true, parametersetname = "ServicePrincipalAuthThumb")]
-        [parameter(mandatory = $true, parametersetname = "ServicePrincipalAuthCert")]
-        [string]$AzureKeyVaultName,
+        [parameter(mandatory = $false, parametersetname = "UserAuth")]
+        [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthThumb")]
+        [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthCert")]
+        [string]$AzureKeyVaultName = "kvAdminService",
 
         [parameter(mandatory = $false, parametersetname = "UserAuth")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthThumb")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthCert")]
-        [string]$LocalAZKeyVaultName = "AdminServiceKeyVault",
+        [string]$LocalKeyVaultName = "kvAdminService",
         
         [parameter(mandatory = $true, parametersetname = "NoVault")]
         [parameter(mandatory = $true, parametersetname = "ServicePrincipalAuthThumb")]
@@ -45,6 +45,11 @@ function Initialize-CMAdminService {
         [parameter(mandatory = $false, parametersetname = "UserAuth")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthThumb")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthCert")]
+        [hashtable]$Tag = @{Project = "AdminService" },
+
+        [parameter(mandatory = $false, parametersetname = "UserAuth")]
+        [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthThumb")]
+        [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthCert")]
         [switch]$ReAuthAzureKeyVault,
 
         [parameter(mandatory = $false, parametersetname = "UserAuth")]
@@ -72,7 +77,8 @@ function Initialize-CMAdminService {
         #           - Requires AdminServiceProviderURL
         
         #TODO Add Logic to detect which parameterset you used
-
+        Get-CMKeyVault | Out-Null
+        
         if ($AdminServiceProviderURL) {
             $script:ASURI = if ($AdminServiceProviderURL -notlike '*/') { $AdminServiceProviderURL + "/" } else { $AdminServiceProviderURL }
             $script:ASVerURI = "$($ASURI)v1.0/"
@@ -80,18 +86,16 @@ function Initialize-CMAdminService {
         }
         if ($UseLocalAuth) {
             Write-Host "Using Local Auth"
-
         }
         else {
-
             #NoVault
             if ($ClientID) {
                 if (-not $script:AdminServiceAuthToken -or $ReAuthAdminServiceToken) {
                     $script:AdminServiceAuthToken = Get-CMAuthToken -TenantId $TenantId -ClientID $ClientID -Resource $Resource -RedirectUri $RedirectUri
                 }
             }
-            #Azure Key vault
-            elseif ($AzureKeyVaultName) {
+            #Key vault
+            else {
                 #Service Principal Certificate Auth
                 #TODO Check to see if already authed with the SP
 
@@ -134,50 +138,58 @@ function Initialize-CMAdminService {
                         Connect-AzAccount | Out-Null
                         $Context = Get-AzContext -ErrorAction SilentlyContinue
                     }
-                }
+                } 
 
-                if ($Context.Subscription.Id) {
-                    $VaultExists = Get-SecretVault -Name $LocalAZKeyVaultName -ErrorAction SilentlyContinue
-                    if (-not $VaultExists) {
-                        Register-SecretVault -Name $LocalAZKeyVaultName -ModuleName Az.KeyVault -VaultParameters @{ AZKVaultName = $AzureKeyVaultName; SubscriptionId = $Context.Subscription.Id } -AllowClobber
-                    }
-
-                    $AdminServiceSecrets = Get-SecretInfo -Vault $LocalAZKeyVaultName -Name AdminService* -ErrorAction SilentlyContinue
-                    if (-not $AdminServiceSecrets) {
-                        Write-Host "Please create the following secrets in your AzureKeyVault 'cause Adam is too lazy to write the function to create these for you 😎" -ForegroundColor Yellow
-                        Write-Host " - AdminServiceBaseURL" -ForegroundColor Cyan
-                        Write-Host " - AdminServiceClientId" -ForegroundColor Cyan
-                        Write-Host " - AdminServiceResource" -ForegroundColor Cyan
-                        Write-Host " - AdminServiceTenantId" -ForegroundColor Cyan
-                        Write-Host " - AdminServiceUserName" -ForegroundColor Cyan
-                        Write-Host " - AdminServicePassword" -ForegroundColor Cyan
-                        Write-Host " - RedirectUri" -ForegroundColor Cyan
-                    }
-                    else {
-                        if (-not $AdminServiceProviderURL) {
-                            $URL = if($UseCMG.IsPresent) {
-                                Get-Secret -Vault $LocalAZKeyVaultName -Name "AdminServiceCMGURL" -AsPlainText
-                            }
-                            else {
-                                Get-Secret -Vault $LocalAZKeyVaultName -Name "AdminServiceBaseURL" -AsPlainText
-                            }
-
-                            $script:ASURI = if ($URL -notlike '*/') { $URL + "/" } else { $URL }
-                            $script:ASVerURI = "$($ASURI)v1.0/"
-                            $script:ASWmiURI = "$($ASURI)wmi/"
-                        }
-                        $script:LocalAZKeyVaultName = $LocalAZKeyVaultName
-                        if (-not $script:AdminServiceAuthToken -or $ReAuthAdminServiceToken) {
-                            $script:AdminServiceAuthToken = Get-CMAuthToken
-                        }
-                        Write-Host "AdminService Initialized. Using $($script:ASURI) for access." -ForegroundColor Cyan
+                <#
+                if($UseLocalVault) {
+                    $script:LocalVault = Get-SecretVault -Name $LocalKeyVaultName
+                    if(-not $script:LocalVault) {
+                        Write-Host "No local vault found. Please set up a new local vault." -ForegroundColor Yellow
+                        return
                     }
                 }
                 else {
-                    Write-Host "User doesn't have access to the Vault subscription. Add vault read access to the vault subscription for the user or service principal." -ForegroundColor Yellow
+                    $LocalVaults = Get-SecretVault | Where-Object {$_.ModuleName -eq "Az.KeyVault"}
+                    forEach($Vault in $LocalVaults) {
+                        $AzVault = Get-AZKeyVault -VaultName $Vault.VaultParameters.AZKVaultName -SubscriptionId $Vault.VaultParameters.SubscriptionId -Tag $Tag -ErrorAction SilentlyContinue
+                        if($AzVault) {
+                            Write-Host "Found AdminService AzureKeyVault $($AzVault.VaultName)." -ForegroundColor cyan
+                            $script:LocalVault = $Vault
+                        }
+                    }
+                    if(-not $script:LocalVault) {
+                        Write-Host "No vault found. Please run New-CMKeyVault to configure a new vault." -ForegroundColor Yellow
+                        return
+                    }
+                }
+#>
+                $AdminServiceSecrets = Get-SecretInfo -Vault $LocalKeyVaultName -Name *AdminService* -ErrorAction SilentlyContinue
+                if (-not $AdminServiceSecrets) {
+                    Write-Host "Go Create Secrets" -ForegroundColor Yellow
+                }
+                else {
+                    if (-not $AdminServiceProviderURL) {
+                        $URL = if ($UseCMG.IsPresent) {
+                            Get-Secret -Vault $script:vault.Name -Name "AdminServiceCMGURL" -AsPlainText
+                        }
+                        else {
+                            Get-Secret -Vault $script:vault.Name -Name "AdminServiceBaseURL" -AsPlainText
+                        }
+
+                        $script:ASURI = if ($URL -notlike '*/') { $URL + "/" } else { $URL }
+                        $script:ASVerURI = "$($ASURI)v1.0/"
+                        $script:ASWmiURI = "$($ASURI)wmi/"
+                    }
+
+                    if (-not $script:AdminServiceAuthToken -or $ReAuthAdminServiceToken) {
+                        $script:AdminServiceAuthToken = Get-CMAuthToken
+                    }
+                    Write-Host "AdminService Initialized. Using $($script:ASURI) for access." -ForegroundColor Cyan
                 }
             }
+            
         }
+        
     }
     catch {
         throw $_
