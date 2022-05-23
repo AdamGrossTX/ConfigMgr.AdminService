@@ -8,18 +8,14 @@ function Get-CMAuthToken {
         [string]$ClientID,
     
         [parameter(mandatory = $false, parametersetname = "AADAuth")]
-        [string]$ServerAppId,
-    
-        [parameter(mandatory = $false, parametersetname = "AADAuth")]
-        [string]$LocalAZKeyVaultName = $Script:LocalAZKeyVaultName
-        
+        [string]$ServerAppId
     )
     try {
         Write-Host "Getting AuthToken " -ForegroundColor Cyan -NoNewline
-        if ($LocalAZKeyVaultName) {
-            $TenantId = if ($TenantId) { $TenantId } else { Get-Secret -Vault $LocalAZKeyVaultName -Name "AdminServiceTenantID" -AsPlainText }
-            $ClientID = if ($ClientID) { $ClientID } else { Get-Secret -Vault $LocalAZKeyVaultName -Name "AdminServiceClientId" -AsPlainText }
-            $ServerAppId = if ($ServerAppId) { $ServerAppId } else { Get-Secret -Vault $LocalAZKeyVaultName -Name "AdminServiceServerAppId" -AsPlainText }
+        if ($script:vault) {
+            $TenantId = if ($TenantId) { $TenantId } else { Get-Secret -Vault $script:vault.Name -Name "AdminServiceTenantID" -AsPlainText }
+            $ClientID = if ($ClientID) { $ClientID } else { Get-Secret -Vault $script:vault.Name -Name "AdminServiceClientAppId" -AsPlainText }
+            $ServerAppId = if ($ServerAppId) { $ServerAppId } else { Get-Secret -Vault $script:vault.Name -Name "AdminServiceServerAppId" -AsPlainText }
         }
     
         #Since we are using MSAL and Rest, the token bodies are different so we will normalize the output
