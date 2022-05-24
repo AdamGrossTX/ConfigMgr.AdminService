@@ -1,3 +1,52 @@
+<#
+.SYNOPSIS
+Set up Key vault and secrets for use with the module
+
+.DESCRIPTION
+Set up Key vault and secrets for use with the module
+
+.PARAMETER TenantId
+Azure AD Tenant Id
+
+.PARAMETER SubscriptionId
+Azure AD SubscriptionId where the KeyVault will be located
+
+.PARAMETER Location
+DisplayName of Azure Location. Use 
+
+Get-AzLocation | Select-Object displayname
+
+to find a location
+
+.PARAMETER AzureKeyVaultName
+Custom key vault name. Default is kvAdminService
+
+.PARAMETER ResourceGroupName
+Custom resource group name. Default is rgAdminService
+
+.PARAMETER LocalKeyVaultName
+Custom local vault name. Default is kvAdminService
+
+.PARAMETER Tag
+HASHTABLE of values used to tag vault and secrets for easy access. Default is
+
+@{Project="ConfigMgr.AdminService"}
+
+.PARAMETER UseLocalVault
+Use a local key vault instead of Azure Key Vault
+
+.PARAMETER CreateDefaultSecrets
+Create default secrets required for the AdminService KeyVault
+
+.PARAMETER Secrets
+Hashtable of secrets
+
+.EXAMPLE
+New-CMKeyVault -TenantId bac71e12-25a3-4e40-b871-1896ef219357 -SubscriptionId 92812f8f-f4c8-4c99-8e9e-c8fa7d3e81b9 -Location "South Central US"
+
+.NOTES
+General notes
+#>
 function New-CMKeyVault {
     [cmdletbinding(DefaultParameterSetName = "AzureKeyVault")]
     param (

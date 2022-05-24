@@ -5,15 +5,21 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Approve-CMScript
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
 
 ## SYNTAX
 
+### ScriptName (Default)
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Approve-CMScript -ScriptName <String> [-Comments <String>] [<CommonParameters>]
+```
+
+### ScriptGUID
+```
+Approve-CMScript -ScriptGuid <String> [-Comments <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,8 +36,8 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -Comments
+{{ Fill Comments Description }}
 
 ```yaml
 Type: String
@@ -45,30 +51,30 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -ScriptGuid
+{{ Fill ScriptGuid Description }}
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: ScriptGUID
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TenantId
-{{ Fill TenantId Description }}
+### -ScriptName
+{{ Fill ScriptName Description }}
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: ScriptName
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

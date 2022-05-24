@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Invoke-CMApplicationUninstall
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Invoke-CMApplicationUninstall [[-CIGUID] <String>] [[-SMSID] <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,8 +30,8 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -CIGUID
+{{ Fill CIGUID Description }}
 
 ```yaml
 Type: String
@@ -39,37 +39,22 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -SMSID
+{{ Fill SMSID Description }}
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TenantId
-{{ Fill TenantId Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

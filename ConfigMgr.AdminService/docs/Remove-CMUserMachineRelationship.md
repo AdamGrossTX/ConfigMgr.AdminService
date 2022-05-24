@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Remove-CMUserMachineRelationship
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -13,7 +13,8 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Remove-CMUserMachineRelationship [[-RelationshipResourceID] <UInt32>] [[-SourceType] <SourceType>]
+ [[-InputObject] <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,46 +31,47 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -InputObject
+{{ Fill InputObject Description }}
 
 ```yaml
-Type: String
+Type: Object
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -RelationshipResourceID
+{{ Fill RelationshipResourceID Description }}
+
+```yaml
+Type: UInt32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -SourceType
+{{ Fill SourceType Description }}
 
 ```yaml
-Type: String
+Type: SourceType
 Parameter Sets: (All)
 Aliases:
+Accepted values: SelfServicePortal, Administrator, User, UsageAgent, OSDDefined
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TenantId
-{{ Fill TenantId Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -80,7 +82,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
+### System.Object
 
 ## OUTPUTS
 

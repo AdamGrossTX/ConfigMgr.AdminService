@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Get-CMUserMachineRelationship
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -13,7 +13,9 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Get-CMUserMachineRelationship [[-ResourceID] <UInt32>] [[-UniqueUserName] <String>]
+ [[-RelationshipResourceID] <UInt32>] [[-SourceType] <SourceType>] [[-InputObject] <Object[]>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,38 +32,69 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -InputObject
+{{ Fill InputObject Description }}
 
 ```yaml
-Type: String
+Type: Object[]
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 4
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -RelationshipResourceID
+{{ Fill RelationshipResourceID Description }}
+
+```yaml
+Type: UInt32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -ResourceID
+{{ Fill ResourceID Description }}
 
 ```yaml
-Type: String
+Type: UInt32
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TenantId
-{{ Fill TenantId Description }}
+### -SourceType
+{{ Fill SourceType Description }}
+
+```yaml
+Type: SourceType
+Parameter Sets: (All)
+Aliases:
+Accepted values: SelfServicePortal, Administrator, User, UsageAgent, OSDDefined
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UniqueUserName
+{{ Fill UniqueUserName Description }}
 
 ```yaml
 Type: String
@@ -69,7 +102,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -80,7 +113,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
+### System.Object[]
 
 ## OUTPUTS
 

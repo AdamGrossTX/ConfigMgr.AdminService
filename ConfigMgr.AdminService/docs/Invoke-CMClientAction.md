@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Invoke-CMClientAction
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -13,7 +13,8 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Invoke-CMClientAction [[-TargetResourceIDs] <UInt32[]>] [[-Type] <ClientAction>]
+ [[-RandomizationWindow] <UInt32>] [[-TargetCollectionID] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,23 +31,23 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -RandomizationWindow
+{{ Fill RandomizationWindow Description }}
 
 ```yaml
-Type: String
+Type: UInt32
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -TargetCollectionID
+{{ Fill TargetCollectionID Description }}
 
 ```yaml
 Type: String
@@ -54,22 +55,38 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TenantId
-{{ Fill TenantId Description }}
+### -TargetResourceIDs
+{{ Fill TargetResourceIDs Description }}
 
 ```yaml
-Type: String
+Type: UInt32[]
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+{{ Fill Type Description }}
+
+```yaml
+Type: ClientAction
+Parameter Sets: (All)
+Aliases:
+Accepted values: DownloadComputerPolicy, DownloadUserPolicy, CollectDiscoveryData, CollectSoftwareInventory, CollectHardwareInventory, EvaluateApplicationDeployments, EvaluateSoftwareUpdateDeployments, SwitchToNextSoftwareUpdatePoint, EvaluateDeviceHealthAttestation, Restart, EnableVerboseLogging, DisableVerboseLogging, CollectClientLogs, CheckConditionalAccessCompliance, WakeUp
+
+Required: False
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
