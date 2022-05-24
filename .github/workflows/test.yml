@@ -21,8 +21,8 @@ jobs:
       - name: pre-build
         shell: pwsh
         run: |
-          Install-Module -Name msal.ps -Verbose -Scope CurrentUser -SkipPublisherCheck -Force -ErrorAction SilentlyContinue -Force
-          Install-Module Az.KeyVault -Verbose -Scope CurrentUser -SkipPublisherCheck -ErrorAction SilentlyContinue -Force
+          Install-Module -Name msal.ps -Verbose -Scope CurrentUser -SkipPublisherCheck -Force -ErrorAction SilentlyContinue
+          Install-Module Az.KeyVault -Verbose -Scope CurrentUser -SkipPublisherCheck  -Force -ErrorAction SilentlyContinue
 
       - name: build
         shell: pwsh
