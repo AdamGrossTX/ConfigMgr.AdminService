@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# New-CMSecrets
+# Invoke-CMRunScript
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -13,9 +13,9 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-New-CMSecrets [[-KeyVaultName] <String>] [[-ApplicationId] <String>] [[-CertificateThumbprint] <String>]
- [[-TenantId] <String>] [[-BaseURL] <String>] [[-ClientId] <String>] [[-Password] <SecureString>]
- [[-Resource] <String>] [[-UserName] <String>]
+Invoke-CMRunScript [[-ScriptGuid] <String>] [[-ScriptName] <String>] [[-ResourceId] <Int32>]
+ [[-DeviceName] <String>] [-WaitForResult] [[-SecondsToWait] <Int32>] [[-InputObject] <Object>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,113 +32,8 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ApplicationId
-{{ Fill ApplicationId Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -BaseURL
-{{ Fill BaseURL Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CertificateThumbprint
-{{ Fill CertificateThumbprint Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ClientId
-{{ Fill ClientId Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 5
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -KeyVaultName
-{{ Fill KeyVaultName Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Password
-{{ Fill Password Description }}
-
-```yaml
-Type: SecureString
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 6
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Resource
-{{ Fill Resource Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 7
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TenantId
-{{ Fill TenantId Description }}
+### -DeviceName
+{{ Fill DeviceName Description }}
 
 ```yaml
 Type: String
@@ -152,8 +47,38 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UserName
-{{ Fill UserName Description }}
+### -InputObject
+{{ Fill InputObject Description }}
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -ResourceId
+{{ Fill ResourceId Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptGuid
+{{ Fill ScriptGuid Description }}
 
 ```yaml
 Type: String
@@ -161,15 +86,63 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ScriptName
+{{ Fill ScriptName Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SecondsToWait
+{{ Fill SecondsToWait Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WaitForResult
+{{ Fill WaitForResult Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
 ## INPUTS
 
-### None
+### System.Object
 
 ## OUTPUTS
 

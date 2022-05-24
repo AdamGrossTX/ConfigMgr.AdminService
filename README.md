@@ -2,51 +2,75 @@
 
 The purpose if this module is to provide PowerShell cmdlet access to the ConfigMgr Administration Service (AdminService). The module features secrets management using Azure Key Vault and support for Token Authentication for automation workloads. Additionally, the AdminService can be configured to be accessible via Azure Application Proxy which allows you to run commands without a direct connection to your ConfigMgr provider server.
 
-## Setup
+## Prerequisites
 
 I've built a lot of stuff out, but you'll have to do SOME legwork if you want to leverage Azure Key Vault or use AdminService over the internet.
 
-### App Registration
+- Azure Tenant with Subscription
+- ConfigMgr Env with AdminService Enabled
+- Cloud Management Gateway
+- Azure App Proxy
+- ConfigMgr Web App and Client App Registrations
 
-### Azure Key Vault
+### Key Vault with Cloud Management Gateway (CMG) or Azure App Proxy
 
-### Create the following Secrets
+`Install-Module ConfigMgr.AdminService`
 
-```plaintext
-AdminServiceBaseURL
-Description: Azure Application Proxy URL
-SecretName: AdminServiceBaseURL
-SecretValue: https://adminservice.contoso.com/AdminService_TokenAuth/
+#### Azure Key Vault
 
-Description: On-prem URL
-SecretName: AdminServiceBaseURL
-SecretValue: https://smsproviderservername.mydomain.internal/AdminService/
+```powershell
+ New-CMKeyVault -TenantId bac71e12-25a3-4e40-b871-1896ef219357 -SubscriptionId 92812f8f-f4c8-4c99-8e9e-c8fa7d3e81b9 -Location "South Central US"
 
-AdminServiceClientId
-Description: The ClientId of the Azure App Registration used to access the AdminService Server App Registration
-SecretName: 
-SecretValue: {ApplicationIdGUID}
-
-AdminServiceBaseURL
-Description: The **Application ID URI** of the ConfigMgr Cloud Management App Registration
-SecretName: AdminServiceBaseURL
-SecretValue: api://{TenantID}/{ApplicationClientID}
-
-AdminServiceTenantId
-Description: The Azure TenantId of the Azure App Registration
-SecretName: AdminServiceTenantId
-SecretValue: {TenantID}
-
-AdminServiceUserName
-Description: The UPN of the account that has access Admin access to manage ConfigMgr
-SecretName: AdminServiceUserName
-SecretValue: MyUser@MyDomain.com
-
-AdminServicePassword
-Description: The Password of the account that has access Admin access to manage ConfigMgr
-SecretName: AdminServicePassword
-SecretValue: MySuperSecretPassword
+$Params = @{
+    AdminServiceTenantId       = "bac71e12-25a3-4e40-b871-1896ef219357"
+    AdminServiceBaseURL        = "https://adminservice.asquaredozen.com/AdminService_TokenAuth"
+    AdminServiceCMGURL         = "HTTPS://ASDCMG.ASQUAREDOZEN.COM/CCM_Proxy_ServerAuth/72057594037927869/AdminService"
+    AdminServiceClientAppId    = "b87d7ed1-7cd9-48a8-89af-f748bc6ce727"
+    AdminServiceServerAppId    = "a0dbbd77-f01b-4c35-8aca-b8e14c084ece"
+    AdminServiceServerAppIdUri = "api://bac71e12-25a3-4e40-b871-1896ef219357/a0dbbd77-f01b-4c35-8aca-b8e14c084ece"
+}
+Set-CMKeyVaultValues @Params
 ```
+
+or
+
+```powershell
+$Params = @{
+    TenantId             = "bac71e12-25a3-4e40-b871-1896ef219357"
+    SubscriptionId       = "92812f8f-f4c8-4c99-8e9e-c8fa7d3e81b9"
+    Location             = "South Central US"
+    CreateDefaultSecrets = $true
+    Secrets              = @{
+        AdminServiceTenantId       = "bac71e12-25a3-4e40-b871-1896ef219357"
+        AdminServiceBaseURL        = "https://adminservice.asquaredozen.com/AdminService_TokenAuth"
+        AdminServiceCMGURL         = "HTTPS://ASDCMG.ASQUAREDOZEN.COM/CCM_Proxy_ServerAuth/72057594037927869/AdminService"
+        AdminServiceClientAppId    = "b87d7ed1-7cd9-48a8-89af-f748bc6ce727"
+        AdminServiceServerAppId    = "a0dbbd77-f01b-4c35-8aca-b8e14c084ece"
+        AdminServiceServerAppIdUri = "api://bac71e12-25a3-4e40-b871-1896ef219357/a0dbbd77-f01b-4c35-8aca-b8e14c084ece"
+    }
+}
+$vault = New-CMKeyVault @Params
+```
+
+#### Local Secrets Vault
+
+```powershell
+$vault = New-CMKeyVault -UseLocalVault
+
+$Params = @{
+    AdminServiceTenantId       = "bac71e12-25a3-4e40-b871-1896ef219357"
+    AdminServiceBaseURL        = "https://adminservice.asquaredozen.com/AdminService_TokenAuth"
+    AdminServiceCMGURL         = "HTTPS://ASDCMG.ASQUAREDOZEN.COM/CCM_Proxy_ServerAuth/72057594037927869/AdminService"
+    AdminServiceClientAppId    = "b87d7ed1-7cd9-48a8-89af-f748bc6ce727"
+    AdminServiceServerAppId    = "a0dbbd77-f01b-4c35-8aca-b8e14c084ece"
+    AdminServiceServerAppIdUri = "api://bac71e12-25a3-4e40-b871-1896ef219357/a0dbbd77-f01b-4c35-8aca-b8e14c084ece"
+}
+Set-CMKeyVaultValues @Params
+```
+
+#### No Vault or Local Only
+
+Not needed.
 
 ## Install the module
 
@@ -61,7 +85,7 @@ To launch the module and get secrets from the vault you'll need to supply the Az
 #### Current User Auth
 
 ```powershell
-Initialize-CMAdminService -KeyVaultName "MyKeyVaultName"
+Initialize-CMAdminService
 ```
 
 Or
@@ -73,7 +97,7 @@ An Azure App Registration (Service Principal) is required and must have a certif
 Initialize-CMAdminService -AzureKeyVaultName "MyAzureKeyVault" -TenantId "{TenantId}" -ApplicationId "{TenantId}" -CertificateThumbprint "2J3H23KKDD4IJDJDIW34JWK3JK23M32KK3N23"
 ```
 
-## Functions
+## Test these functions to get started
 
 ```powershell
 #Get all devices

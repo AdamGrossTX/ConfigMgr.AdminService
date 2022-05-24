@@ -5,15 +5,21 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# New-CMDirectRule
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
 
 ## SYNTAX
 
+### Params (Default)
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+New-CMDirectRule [-ResourceId] <Int32> [[-RuleName] <String>] [[-Type] <String>] [<CommonParameters>]
+```
+
+### InputObject
+```
+New-CMDirectRule [-InputObject] <Object> [[-RuleName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,23 +36,38 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -InputObject
+{{ Fill InputObject Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
+Type: Object
+Parameter Sets: InputObject
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -ResourceId
+{{ Fill ResourceId Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: Params
+Aliases:
+
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -RuleName
+{{ Fill RuleName Description }}
 
 ```yaml
 Type: String
@@ -54,22 +75,23 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 1
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -TenantId
-{{ Fill TenantId Description }}
+### -Type
+{{ Fill Type Description }}
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Params
 Aliases:
+Accepted values: Device, User
 
 Required: False
-Position: Named
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -80,11 +102,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
+### System.Object
+
+### System.String
 
 ## OUTPUTS
 
-### System.Object
+### System.Collections.Hashtable
+
 ## NOTES
 
 ## RELATED LINKS

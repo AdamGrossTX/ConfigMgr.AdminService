@@ -5,15 +5,14 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Import-CMAssemblies
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Import-CMAssemblies [[-AssemblyPath] <FileInfo>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,47 +29,17 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -AssemblyPath
+{{ Fill AssemblyPath Description }}
 
 ```yaml
-Type: String
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ServerAppId
-{{ Fill ServerAppId Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TenantId
-{{ Fill TenantId Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
+Position: 1
+Default value: "$($PSScriptRoot)\bin"
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -80,11 +49,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
-
 ## OUTPUTS
 
-### System.Object
 ## NOTES
+Need to check the path on this one.
+Not sure it'll work like this
 
 ## RELATED LINKS

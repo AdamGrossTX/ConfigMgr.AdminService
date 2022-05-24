@@ -15,8 +15,17 @@ stages:
     jobs:
       - job: Build
         pool:
-          vmImage: 'vs2017-win2016'
+          vmImage: 'windows-2019'
         steps:
+          - task: PowerShell@2
+            displayName: Pre-Build
+            inputs:
+              targetType: 'inline'
+              script: |
+                Install-Module -Name msal.ps -Verbose -Scope CurrentUser -SkipPublisherCheck -Force
+                Install-Module -Name Az.KeyVault -Verbose -Scope CurrentUser -SkipPublisherCheck -Force
+              pwsh: true
+
           - task: PowerShell@2
             displayName: Build
             inputs:
@@ -42,7 +51,7 @@ stages:
       - deployment: 'Deploy'
         displayName: 'Publish to PSGallery'
         pool:
-          vmImage: 'vs2017-win2016'
+          vmImage: 'windows-2019'
         environment: 'production'
         strategy:
           runOnce:

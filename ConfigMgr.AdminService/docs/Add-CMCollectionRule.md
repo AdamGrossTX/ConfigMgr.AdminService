@@ -5,15 +5,20 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-CMAuthToken
+# Add-CMCollectionRule
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
+### CollectionId (Default)
 ```
-Get-CMAuthToken [-TenantId <String>] [-ClientID <String>] [-ServerAppId <String>] [<CommonParameters>]
+Add-CMCollectionRule -CollectionId <String> -CollectionRule <Hashtable[]> [<CommonParameters>]
+```
+
+### Collection
+```
+Add-CMCollectionRule -Collection <Object> -CollectionRule <Hashtable[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,45 +35,45 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-{{ Fill ClientID Description }}
+### -Collection
+{{ Fill Collection Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
+Type: Object
+Parameter Sets: Collection
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -ServerAppId
-{{ Fill ServerAppId Description }}
+### -CollectionId
+{{ Fill CollectionId Description }}
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: CollectionId
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -TenantId
-{{ Fill TenantId Description }}
+### -CollectionRule
+{{ Fill CollectionRule Description }}
 
 ```yaml
-Type: String
+Type: Hashtable[]
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -80,11 +85,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
-
 ## OUTPUTS
 
-### System.Object
 ## NOTES
+This only works in the more recent builds (2110+)
 
 ## RELATED LINKS
