@@ -1,4 +1,9 @@
-function New-CMUserMachineRelationship {
+
+#https://github.com/AdamGrossTX/Toolbox/blob/20a5fa6ad676572291b98ac5fad21a556aaa8135/Demo%20Content/Graph%20API%20and%20AdminService%20(MMSMiami)/Set-ManagedDeviceName.ps1
+#"$($DeviceClassURL)($($CMDevice.ResourceId))/AdminService.GetExtensionData"
+
+
+function New-CMDeviceExtensionData {
     [cmdletbinding()]
     param (
         [uint32]$MachineResourceId,

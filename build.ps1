@@ -4,16 +4,22 @@ param (
     [System.IO.FileInfo]$modulePath = "$PSScriptRoot\ConfigMgr.AdminService",
 
     [parameter(Mandatory = $false)]
-    [switch]$buildLocal
+    [switch]$buildLocal = $true
 )
 
 try {
     #region Generate a new version number
     $moduleName = Split-Path -Path $modulePath -Leaf
-    $PreviousVersion = Find-Module -Name $moduleName -ErrorAction SilentlyContinue | Select-Object *
+    $PreviousVersion = Find-Module -Name $moduleName -ErrorAction SilentlyContinue | Sort-Object Version -Descending | Select-Object -First 1 *
     [Version]$exVer = $PreviousVersion ? $PreviousVersion.Version : $null
     if ($buildLocal) {
-        $rev = ((Get-ChildItem -Path "$PSScriptRoot\bin\release\" -ErrorAction SilentlyContinue).Name | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum) + 1
+        $releases = Get-ChildItem -Path "$PSScriptRoot\bin\release\" -ErrorAction SilentlyContinue
+        if($releases) {
+            $rev = ($releases.Name | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum) + 1
+        }
+        else {
+            $rev = 1
+        }
         $newVersion = New-Object -TypeName Version -ArgumentList 1, 0, 0, $rev
     }
     else {
@@ -51,7 +57,7 @@ $($previousVersion.releaseNotes)
         New-Item -Path $relPath -ItemType Directory -Force | Out-Null
     }
 
-    Copy-Item -Path "$modulePath\*" -Destination "$relPath" -Recurse -Exclude ".gitKeep", "releaseNotes.txt", "description.txt"
+    Copy-Item -Path "$modulePath\*" -Destination "$relPath" -Recurse -Exclude ".gitKeep", "releaseNotes.txt", "description.txt","docs"
 
     $Manifest = @{
         Path              = "$relPath\$moduleName.psd1"

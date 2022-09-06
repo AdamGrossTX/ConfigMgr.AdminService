@@ -5,6 +5,8 @@ function Get-FilterString {
         $FilterObjs
     )
 
+    Add-Type -AssemblyName System.Web -ErrorAction SilentlyContinue
+
     $Filter = "?`$filter=" +
     [System.Web.HTTPUtility]::UrlEncode((($FilterObjs | ForEach-Object {
             $value = if ($_.value -is [string]) {

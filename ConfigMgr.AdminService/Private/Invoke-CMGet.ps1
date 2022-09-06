@@ -80,14 +80,14 @@ function Invoke-CMGet {
             }
         }
     }
-    catch [Microsoft.PowerShell.Commands.HttpResponseException] {
-        if ($_.Exception.Response.ReasonPhrase -eq "Token validation failed") {
-            Get-CMAuthToken
-        }
-        else {
-            throw $_
-        }
-    }
+    #catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+    #    if ($_.Exception.Response.ReasonPhrase -eq "Token validation failed") {
+    #        Get-CMAuthToken
+    #    }
+    #    else {
+    #        throw $_
+    #    }
+    #}
     catch {
         throw $_
     }

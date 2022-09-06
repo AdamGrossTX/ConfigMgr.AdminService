@@ -63,11 +63,11 @@ stages:
                     script: |
                       try {
                         write-host "Publishing module from: $env:Pipeline_Workspace\release\$env:MODULENAME"
-                        Publish-Module -Path "$env:Pipeline_Workspace\release\$env:MODULENAME" -NuGetApiKey ${env:APIKEY}
+                        Publish-Module -Path "$env:Pipeline_Workspace\release\$env:MODULENAME" -NuGetApiKey $env:APIKEY
                       }
                       catch {
                         write-warning $_
                       }
                     pwsh: true
                   env:
-                    APIKEY: $(APIKEY)
+                    APIKEY: $(apiKey)
