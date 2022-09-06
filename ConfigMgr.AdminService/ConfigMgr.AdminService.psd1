@@ -51,10 +51,11 @@
     # ProcessorArchitecture = ''
     
     # Modules that must be imported into the global environment prior to importing this module
-     RequiredModules = @(
-        @{ ModuleName = "Az.KeyVault"; ModuleVersion = "4.3" }
-        @{ ModuleName = "msal.ps"; ModuleVersion = "4.37.0.0" }
-     )
+     #RequiredModules = @(
+     #   @{ ModuleName = "Az.KeyVault"; ModuleVersion = "4.3" }
+     #   @{ ModuleName = "msal.ps"; ModuleVersion = "4.37.0.0" }
+     #   @{ ModuleName = "Microsoft.PowerShell.SecretManagement"; ModuleVersion = "1.0.0.0" }
+     #)
     
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
@@ -119,7 +120,11 @@
             # RequireLicenseAcceptance = $false
     
             # External dependent modules of this module
-            # ExternalModuleDependencies = @()
+             ExternalModuleDependencies = @(
+                "Az.KeyVault",
+                "msal.ps",
+                "Microsoft.PowerShell.SecretManagement"
+            )
     
         } # End of PSData hashtable
     

@@ -11,9 +11,9 @@ function Invoke-CMDelete {
             #check if the token is using the secrets token and if so ensure it's current, otherwise refresh it
             if ($Token) {
                 #if ($Token -eq $script:AdminServiceAuthToken.AccessToken) {
-                    #if ((Get-Date) - ((Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($script:AdminServiceAuthToken.ExpiresOn))) -ge 0) {
-                        #$Token = (Get-CMAuthToken).AccessToken
-                    #}
+                #if ((Get-Date) - ((Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($script:AdminServiceAuthToken.ExpiresOn))) -ge 0) {
+                #$Token = (Get-CMAuthToken).AccessToken
+                #}
                 #}
             }
             elseif (-not $script:AdminServiceAuthToken.AccessToken) {
@@ -35,27 +35,29 @@ function Invoke-CMDelete {
                 }
             }
             else {
-                $Params = @{
-                    Method               = "DELETE"
-                    ContentType          = "application/json"
-                    URI                  = $URI
-                    UseDefaultCredential = $True
-                }
-            }
-
-            Write-Verbose $URI
-            $Result = Invoke-RestMethod @Params
-
-            if (($Result | Get-Member).Name -eq "Value") {
-                return $Result.value
-            }
-            else {
-                return $Result
+                Write-Host "No Auth Token."
+                return $null
             }
         }
         else {
-            Write-Host "No Auth Token Found."
+            $Params = @{
+                Method               = "DELETE"
+                ContentType          = "application/json"
+                URI                  = $URI
+                UseDefaultCredential = $True
+            }
         }
+
+        Write-Verbose $URI
+        $Result = Invoke-RestMethod @Params
+
+        if (($Result | Get-Member).Name -eq "Value") {
+            return $Result.value
+        }
+        else {
+            return $Result
+        }
+    
     }
     catch [System.Net.WebException] {
         if ($ReturnErrorToCaller.IsPresent) {

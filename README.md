@@ -14,7 +14,9 @@ I've built a lot of stuff out, but you'll have to do SOME legwork if you want to
 
 ### Key Vault with Cloud Management Gateway (CMG) or Azure App Proxy
 
-`Install-Module ConfigMgr.AdminService`
+```powershell
+Install-Module ConfigMgr.AdminService
+```
 
 #### Azure Key Vault
 
