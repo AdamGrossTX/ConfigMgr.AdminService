@@ -39,8 +39,8 @@ jobs:
         shell: pwsh
         run: |
           try {
-            write-host "Publishing module from: ${{ github.workspace }}\bin\release\$env:MODULENAME"
-            Publish-Module -Path "${{ github.workspace }}\bin\release\$env:MODULENAME" -NuGetApiKey ${{ secrets.APIKEY }}
+            write-host "Publishing module from: ${{ github.workspace }}\bin\release\ConfigMgr.AdminService"
+            Publish-Module -Path "${{ github.workspace }}\bin\release\ConfigMgr.AdminService" -NuGetApiKey ${{ secrets.APIKEY }}
           }
           catch {
             write-warning $_
