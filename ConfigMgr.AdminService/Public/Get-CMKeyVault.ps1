@@ -1,6 +1,8 @@
 function Get-CMKeyVault {
     [cmdletbinding()]
-    param()
+    param(
+        [string]$AzureKeyVaultName
+    )
     try {
         $script:vault = $null
         $VaultParams = @{}
@@ -8,9 +10,18 @@ function Get-CMKeyVault {
         foreach ($key in $script:tag.keys) {
             $VaultParams[$key] = $script:tag[$key]
         }
-        $ExistingVault = Get-SecretVault | Where-Object { $_.VaultParameters.Project -eq $script:tag.Project } -ErrorAction SilentlyContinue
+
+        $ExistingVault = if($AzureKeyVaultName) {
+            Get-AzKeyVault -VaultName $AzureKeyVaultName -ErrorAction SilentlyContinue
+        }
+        else {
+            Get-SecretVault | Where-Object { $_.VaultParameters.Project -eq $script:tag.Project } -ErrorAction SilentlyContinue
+        }
         if ($ExistingVault) {
-            if ($ExistingVault.ModuleName -eq "Microsoft.PowerShell.SecretStore") {
+            if($AzureKeyVaultName) {
+                $script:vault = $ExistingVault
+            }
+            elseif ($ExistingVault.ModuleName -eq "Microsoft.PowerShell.SecretStore") {
                 Write-Host "Local Vault $($ExistingVault.Name) found." -ForegroundColor Cyan -NoNewline
                 Write-Host $Script:tick -ForegroundColor yellow
                 $script:vault = $ExistingVault
@@ -27,3 +38,4 @@ function Get-CMKeyVault {
         throw $_
     }
 }
+
