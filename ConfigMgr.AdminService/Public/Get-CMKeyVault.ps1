@@ -12,7 +12,7 @@ function Get-CMKeyVault {
         }
 
         $ExistingVault = if($AzureKeyVaultName) {
-            Get-AzKeyVault -VaultName $AzureKeyVaultName -ErrorAction SilentlyContinue
+            Get-AzKeyVault -VaultName $AzureKeyVaultName
         }
         else {
             Get-SecretVault | Where-Object { $_.VaultParameters.Project -eq $script:tag.Project } -ErrorAction SilentlyContinue

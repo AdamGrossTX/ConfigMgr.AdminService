@@ -5,12 +5,12 @@ function Initialize-CMAdminService {
         [parameter(mandatory = $false, parametersetname = "UserAuth")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthThumb")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthCert")]
-        [string]$AzureKeyVaultName = "kvAdminService",
+        [string]$AzureKeyVaultName,
 
         [parameter(mandatory = $false, parametersetname = "UserAuth")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthThumb")]
         [parameter(mandatory = $false, parametersetname = "ServicePrincipalAuthCert")]
-        [string]$LocalKeyVaultName = "kvAdminService",
+        [string]$LocalKeyVaultName,
         
         [parameter(mandatory = $true, parametersetname = "NoVault")]
         [parameter(mandatory = $true, parametersetname = "ServicePrincipalAuthThumb")]
@@ -92,7 +92,7 @@ function Initialize-CMAdminService {
             $script:ASWmiURI = "$($ASURI)wmi/"
         }
         if ($UseLocalAuth.IsPresent) {
-            Write-Host "Using Local Auth"
+            Write-Output "Using Local Auth"
         }
         else {
             #NoVault
@@ -139,7 +139,10 @@ function Initialize-CMAdminService {
                     }
                 } 
 
-                $Context = Get-AzContext -ErrorAction SilentlyContinue
+                $Context = Get-AzContext
+                if(-Not $Context.Subscription.id) {
+                    Write-Output "We didn't get connected."
+                }
 
                 Get-CMKeyVault -AzureKeyVaultName $AzureKeyVaultName | Out-Null
 
@@ -150,10 +153,11 @@ function Initialize-CMAdminService {
                     Get-SecretInfo -Vault $LocalKeyVaultName -Name *AdminService* -ErrorAction SilentlyContinue
                 }
                 else {
-                    Write-Host "No Vault Found" -ForegroundColor Yellow
+                    Write-Output "No Vault Found" 
                 }
+
                 if (-not $AdminServiceSecrets) {
-                    Write-Host "Go Create Secrets" -ForegroundColor Yellow
+                    Write-Output "Go Create Secrets" 
                 }
                 else {
                     if (-not $AdminServiceProviderURL) {
@@ -187,7 +191,7 @@ function Initialize-CMAdminService {
                             $script:AdminServiceAuthToken = Get-CMAuthToken
                         }
                     }
-                    Write-Host "AdminService Initialized. Using $($script:ASURI) for access." -ForegroundColor Cyan
+                    Write-Output "AdminService Initialized. Using $($script:ASURI) for access." 
                 }
             }
             
