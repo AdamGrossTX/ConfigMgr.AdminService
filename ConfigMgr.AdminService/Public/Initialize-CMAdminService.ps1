@@ -86,6 +86,13 @@ function Initialize-CMAdminService {
         #           - Requires AdminServiceProviderURL
         
         #TODO Add Logic to detect which parameterset you used
+        [hashtable]$ResultObj = @{
+            ASURI = $null
+            ASVerURI = $null
+            ASWmiURI = $null
+            vault = $null
+            AdminServiceAuthToken = $null
+        }
         if ($AdminServiceProviderURL) {
             $script:ASURI = if ($AdminServiceProviderURL -notlike '*/') { $AdminServiceProviderURL + "/" } else { $AdminServiceProviderURL }
             $script:ASVerURI = "$($ASURI)v1.0/"
@@ -96,7 +103,7 @@ function Initialize-CMAdminService {
         }
         else {
             #NoVault
-            if ($ClientID -and (-not $script:AdminServiceAuthToken) -or ($ReAuthAdminServiceToken)) {
+            if ($ClientID -and (-not $script:AdminServiceAuthToken -or $ReAuthAdminServiceToken)) {
                 $script:AdminServiceAuthToken = Get-CMAuthToken -TenantId $TenantId -ClientID $ClientID -Resource $Resource -RedirectUri $RedirectUri
             }
             #Key vault
@@ -120,7 +127,7 @@ function Initialize-CMAdminService {
                             CertificateThumbprint = if ($Certificate) { $Certificate.Thumbprint } else { $CertificateThumbprint }
                             ServicePrincipal      = $True
                         }
-                        Connect-AzAccount @ServicePrincipalAuth | Out-Null
+                        $connection = Connect-AzAccount @ServicePrincipalAuth | Out-Null
                     }
                     elseIf ($ClientSecret) {
                         $ServicePrincipalAuth = @{
@@ -129,13 +136,13 @@ function Initialize-CMAdminService {
                             ClientSecret     = $ClientSecret
                             ServicePrincipal = $True
                         }
-                        Connect-AzAccount @ServicePrincipalAuth | Out-Null
+                        $connection = Connect-AzAccount @ServicePrincipalAuth | Out-Null
                     }
                     elseif ($UseAutomationIdentity) {
-                        Connect-AZAccount -Identity
+                        $connection = Connect-AZAccount -Identity | Out-Null
                     }
                     else {
-                        Connect-AzAccount | Out-Null
+                        $connection = Connect-AzAccount | Out-Null
                     }
                 } 
 
@@ -144,7 +151,7 @@ function Initialize-CMAdminService {
                     Write-Output "We didn't get connected."
                 }
 
-                Get-CMKeyVault -AzureKeyVaultName $AzureKeyVaultName | Out-Null
+                $script:vault = Get-CMKeyVault -AzureKeyVaultName $AzureKeyVaultName
 
                 $AdminServiceSecrets = if ($AzureKeyVaultName) {
                     Get-AzKeyVaultSecret -VaultName $AzureKeyVaultName -Name *AdminService* -ErrorAction SilentlyContinue
@@ -191,12 +198,16 @@ function Initialize-CMAdminService {
                             $script:AdminServiceAuthToken = Get-CMAuthToken
                         }
                     }
-                    Write-Output "AdminService Initialized. Using $($script:ASURI) for access." 
+                    #Write-Verbose "AdminService Initialized. Using $($script:ASURI) for access." 
                 }
             }
-            
         }
-        
+        $ResultObj.ASWmiURI = $script:ASWmiURI
+        $ResultObj.ASURI = $script:ASURI
+        $ResultObj.ASVerURI = $script:ASVerURI
+        $ResultObj.vault = $script:vault
+        $ResultObj.AdminServiceAuthToken = $script:AdminServiceAuthToken
+        return $ResultObj
     }
     catch {
         throw $_

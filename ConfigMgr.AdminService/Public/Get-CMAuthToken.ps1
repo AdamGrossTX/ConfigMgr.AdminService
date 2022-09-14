@@ -14,7 +14,7 @@ function Get-CMAuthToken {
         [string]$Scope
     )
     try {
-        Write-Host "Getting AuthToken " -ForegroundColor Cyan -NoNewline
+        #Write-Host "Getting AuthToken " -ForegroundColor Cyan -NoNewline
         if ($script:vault) {
             $TenantId = if ($TenantId) { $TenantId } else { Get-Secret -Vault $script:vault.Name -Name "AdminServiceTenantID" -AsPlainText }
             $ClientID = if ($ClientID) { $ClientID } else { Get-Secret -Vault $script:vault.Name -Name "AdminServiceClientAppId" -AsPlainText }
@@ -49,7 +49,7 @@ function Get-CMAuthToken {
         $TokenObj.ExpiresOn = $TokenResponse.ExpiresOn
 
         $script:AdminServiceAuthToken = $TokenObj
-        Write-Host $script:tick -ForegroundColor Yellow
+        #Write-Host $script:tick -ForegroundColor Yellow
         return $script:AdminServiceAuthToken
        
     }

@@ -11,6 +11,6 @@ Function Set-CMDeviceExtensionData {
         return $Result | Select-Object -Property * -ExcludeProperty _*, `@odata*
     }
     catch {
-
+        throw $_
     }
 }

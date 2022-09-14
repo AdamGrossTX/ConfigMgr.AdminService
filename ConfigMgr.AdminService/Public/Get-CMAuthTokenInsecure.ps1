@@ -20,7 +20,7 @@ function Get-CMAuthTokenInsecure {
         [SecureString]$Password
     )
     try {
-        Write-Host "Getting AuthToken " -ForegroundColor Cyan -NoNewline
+        #Write-Host "Getting AuthToken " -ForegroundColor Cyan -NoNewline
         #LocalKeyVault
         if ($script:vault.Name) {
             $TenantId = if ($TenantId) { $TenantId } else { Get-Secret -Vault $script:vault.Name -Name "AdminServiceTenantID" -AsPlainText }
@@ -71,7 +71,7 @@ function Get-CMAuthTokenInsecure {
         $TokenObj.ExpiresOn = $TokenResponse.ExpiresOn
 
         $script:AdminServiceAuthToken = $TokenObj
-        Write-Host $script:tick -ForegroundColor Yellow
+        #Write-Host $script:tick -ForegroundColor Yellow
         return $script:AdminServiceAuthToken
        
     }
