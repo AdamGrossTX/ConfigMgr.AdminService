@@ -8,7 +8,7 @@ function Invoke-CMPost {
     )
     try {
         #check if the token is using the secrets token and if so ensure it's current, otherwise refresh it
-        if ($URI -like "*AdminService_TokenAuth*" -or $URI -like "*CCM_Proxy_MutualAuth*") {
+        if ($URI -like "*AdminService_TokenAuth*" -or $URI -like "*CCM_Proxy_ServerAuth*" -or $URI -like "*CCM_Proxy_MutualAuth*") {
             #check if the token is using the secrets token and if so ensure it's current, otherwise refresh it
             if ($Token) {
                 #if ($Token -eq $script:AdminServiceAuthToken.AccessToken) {

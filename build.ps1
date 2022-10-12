@@ -23,6 +23,9 @@ try {
         $newVersion = New-Object -TypeName Version -ArgumentList 1, 0, 0, $rev
     }
     else {
+        if(Test-Path "$PSScriptRoot\bin\release\") {
+            Remove-Item -Path "$PSScriptRoot\bin\release\" -Recurse -Force
+        }
         $newVersion = if ($exVer) {
             $rev = ($exVer.Revision + 1)
             New-Object version -ArgumentList $exVer.Major, $exVer.Minor, $exVer.Build, $rev

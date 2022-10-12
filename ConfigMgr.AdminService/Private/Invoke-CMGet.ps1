@@ -6,7 +6,7 @@ function Invoke-CMGet {
         [switch]$ReturnErrorToCaller
     )
     try {
-        if ($URI -like "*AdminService_TokenAuth*" -or $URI -like "*CCM_Proxy_ServerAuth*") {
+        if ($URI -like "*AdminService_TokenAuth*" -or $URI -like "*CCM_Proxy_ServerAuth*" -or $URI -like "*CCM_Proxy_MutualAuth*") {
             #check if the token is using the secrets token and if so ensure it's current, otherwise refresh it
             if ($Token) {
 
