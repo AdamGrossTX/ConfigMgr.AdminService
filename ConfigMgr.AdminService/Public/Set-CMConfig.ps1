@@ -1,6 +1,6 @@
 function Set-CMConfig {
     param(
-        [hashtable]$ConfigObj
+        $ConfigObj
     )
     try {
 

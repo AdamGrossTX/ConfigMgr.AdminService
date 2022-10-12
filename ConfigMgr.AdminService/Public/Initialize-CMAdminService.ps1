@@ -99,7 +99,7 @@ function Initialize-CMAdminService {
             $script:ASWmiURI = "$($ASURI)wmi/"
         }
         if ($UseLocalAuth.IsPresent) {
-            Write-Output "Using Local Auth"
+            Write-Verbose "Using Local Auth"
         }
         else {
             #NoVault
@@ -207,7 +207,7 @@ function Initialize-CMAdminService {
         $ResultObj.ASVerURI = $script:ASVerURI
         $ResultObj.vault = $script:vault
         $ResultObj.AdminServiceAuthToken = $script:AdminServiceAuthToken
-        return $ResultObj
+        $ResultObj
     }
     catch {
         throw $_
