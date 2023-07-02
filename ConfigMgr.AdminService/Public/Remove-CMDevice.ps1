@@ -12,7 +12,7 @@ function Remove-CMDevice {
             if ($InputObject) {
                 $ResourceID = $InputObject.ResourceID
             }
-            $Result = Invoke-CMDelete -URI "$($script:ASWmiURI)SMS_R_Device($($ResourceID))"
+            $Result = Invoke-CMDelete -URI "$($script:ASWmiURI)SMS_R_System($($ResourceID))"
             return $Result
         }
         catch {
