@@ -11,7 +11,7 @@ try {
     #region Generate a new version number
     $moduleName = Split-Path -Path $modulePath -Leaf
     $PreviousVersion = Find-Module -Name $moduleName -ErrorAction SilentlyContinue | Sort-Object Version -Descending | Select-Object -First 1 *
-    [Version]$exVer = $PreviousVersion ? $PreviousVersion.Version : $null
+    [Version]$exVer = if($PreviousVersion) {$PreviousVersion.Version} else {$null}
     if ($buildLocal) {
         $releases = Get-ChildItem -Path "$PSScriptRoot\bin\release\" -ErrorAction SilentlyContinue
         if($releases) {
