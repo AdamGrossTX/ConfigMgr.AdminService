@@ -41,6 +41,16 @@ function Invoke-CMPost {
                 return $null
             }
         }
+        elseif($script:LocalAuthCreds) 
+        {
+            $Params = @{
+                Method               = "POST"
+                ContentType          = "application/json"
+                Body                 = $Body | ConvertTo-Json -Depth 100
+                URI                  = $URI
+                Credential           = $script:LocalAuthCreds
+            }
+        }
         else {
             $Params = @{
                 Method               = "POST"

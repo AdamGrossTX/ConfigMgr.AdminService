@@ -42,7 +42,17 @@ function Invoke-CMGet {
                 return $null
             }
         }
-        else {
+        elseif($script:LocalAuthCreds) 
+        {
+            $Params = @{
+                Method               = "GET"
+                ContentType          = "application/json"
+                URI                  = $URI
+                Credential           = $script:LocalAuthCreds
+            }
+        }
+        else
+        {
             $Params = @{
                 Method               = "GET"
                 ContentType          = "application/json"

@@ -39,7 +39,17 @@ function Invoke-CMDelete {
                 return $null
             }
         }
-        else {
+        elseif($script:LocalAuthCreds) 
+        {
+            $Params = @{
+                Method               = "DELETE"
+                ContentType          = "application/json"
+                URI                  = $URI
+                Credential           = $script:LocalAuthCreds
+            }
+        }
+        else
+        {
             $Params = @{
                 Method               = "DELETE"
                 ContentType          = "application/json"
